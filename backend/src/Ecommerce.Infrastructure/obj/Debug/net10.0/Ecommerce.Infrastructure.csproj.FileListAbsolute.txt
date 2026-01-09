@@ -1,0 +1,17 @@
+/Users/cynic/fun/ecommerce/backend/src/Ecommerce.Infrastructure/bin/Debug/net10.0/Ecommerce.Infrastructure.deps.json
+/Users/cynic/fun/ecommerce/backend/src/Ecommerce.Infrastructure/bin/Debug/net10.0/Ecommerce.Infrastructure.dll
+/Users/cynic/fun/ecommerce/backend/src/Ecommerce.Infrastructure/bin/Debug/net10.0/Ecommerce.Infrastructure.pdb
+/Users/cynic/fun/ecommerce/backend/src/Ecommerce.Infrastructure/bin/Debug/net10.0/Ecommerce.Application.dll
+/Users/cynic/fun/ecommerce/backend/src/Ecommerce.Infrastructure/bin/Debug/net10.0/Ecommerce.Domain.dll
+/Users/cynic/fun/ecommerce/backend/src/Ecommerce.Infrastructure/bin/Debug/net10.0/Ecommerce.Application.pdb
+/Users/cynic/fun/ecommerce/backend/src/Ecommerce.Infrastructure/bin/Debug/net10.0/Ecommerce.Domain.pdb
+/Users/cynic/fun/ecommerce/backend/src/Ecommerce.Infrastructure/obj/Debug/net10.0/Ecommerce.Infrastructure.csproj.AssemblyReference.cache
+/Users/cynic/fun/ecommerce/backend/src/Ecommerce.Infrastructure/obj/Debug/net10.0/Ecommerce.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+/Users/cynic/fun/ecommerce/backend/src/Ecommerce.Infrastructure/obj/Debug/net10.0/Ecommerce.Infrastructure.AssemblyInfoInputs.cache
+/Users/cynic/fun/ecommerce/backend/src/Ecommerce.Infrastructure/obj/Debug/net10.0/Ecommerce.Infrastructure.AssemblyInfo.cs
+/Users/cynic/fun/ecommerce/backend/src/Ecommerce.Infrastructure/obj/Debug/net10.0/Ecommerce.Infrastructure.csproj.CoreCompileInputs.cache
+/Users/cynic/fun/ecommerce/backend/src/Ecommerce.Infrastructure/obj/Debug/net10.0/Ecommerc.43E367F3.Up2Date
+/Users/cynic/fun/ecommerce/backend/src/Ecommerce.Infrastructure/obj/Debug/net10.0/Ecommerce.Infrastructure.dll
+/Users/cynic/fun/ecommerce/backend/src/Ecommerce.Infrastructure/obj/Debug/net10.0/refint/Ecommerce.Infrastructure.dll
+/Users/cynic/fun/ecommerce/backend/src/Ecommerce.Infrastructure/obj/Debug/net10.0/Ecommerce.Infrastructure.pdb
+/Users/cynic/fun/ecommerce/backend/src/Ecommerce.Infrastructure/obj/Debug/net10.0/ref/Ecommerce.Infrastructure.dll
