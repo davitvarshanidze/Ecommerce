@@ -13,3 +13,4 @@
 /Users/cynic/fun/ecommerce/backend/src/Ecommerce.Application/obj/Debug/net10.0/refint/Ecommerce.Application.dll
 /Users/cynic/fun/ecommerce/backend/src/Ecommerce.Application/obj/Debug/net10.0/Ecommerce.Application.pdb
 /Users/cynic/fun/ecommerce/backend/src/Ecommerce.Application/obj/Debug/net10.0/ref/Ecommerce.Application.dll
+/Users/cynic/fun/ecommerce/backend/src/Ecommerce.Application/obj/Debug/net10.0/Ecommerce.Application.sourcelink.json

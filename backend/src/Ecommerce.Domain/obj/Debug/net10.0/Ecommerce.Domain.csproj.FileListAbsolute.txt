@@ -9,3 +9,4 @@
 /Users/cynic/fun/ecommerce/backend/src/Ecommerce.Domain/obj/Debug/net10.0/refint/Ecommerce.Domain.dll
 /Users/cynic/fun/ecommerce/backend/src/Ecommerce.Domain/obj/Debug/net10.0/Ecommerce.Domain.pdb
 /Users/cynic/fun/ecommerce/backend/src/Ecommerce.Domain/obj/Debug/net10.0/ref/Ecommerce.Domain.dll
+/Users/cynic/fun/ecommerce/backend/src/Ecommerce.Domain/obj/Debug/net10.0/Ecommerce.Domain.sourcelink.json

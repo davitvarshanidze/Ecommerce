@@ -97,3 +97,4 @@
 /Users/cynic/fun/ecommerce/backend/tests/Ecommerce.Tests/obj/Debug/net10.0/Ecommerce.Tests.pdb
 /Users/cynic/fun/ecommerce/backend/tests/Ecommerce.Tests/obj/Debug/net10.0/Ecommerce.Tests.genruntimeconfig.cache
 /Users/cynic/fun/ecommerce/backend/tests/Ecommerce.Tests/obj/Debug/net10.0/ref/Ecommerce.Tests.dll
+/Users/cynic/fun/ecommerce/backend/tests/Ecommerce.Tests/obj/Debug/net10.0/Ecommerce.Tests.sourcelink.json
