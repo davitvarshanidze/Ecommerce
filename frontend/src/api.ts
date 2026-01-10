@@ -34,3 +34,9 @@ export async function fetchProducts(params: {
   if (!res.ok) throw new Error(`Failed: ${res.status}`);
   return res.json();
 }
+
+export async function fetchProduct(id: string): Promise<Product> {
+  const res = await fetch(`${API_BASE}/products/${id}`);
+  if (!res.ok) throw new Error(`Failed: ${res.status}`);
+  return res.json();
+}

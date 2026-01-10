@@ -1,35 +1,21 @@
-import { useEffect, useState } from "react";
-import { fetchProducts, type Product } from "./api";
-
-function formatPrice(cents: number) {
-  return (cents / 100).toFixed(2);
-}
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { ProductListPage } from "./pages/ProductListPage";
+import { ProductDetailPage } from "./pages/ProductDetailPage";
+import { CartPage } from "./pages/CartPage";
 
 export default function App() {
-  const [items, setItems] = useState<Product[]>([]);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    fetchProducts({ page: 1, pageSize: 12 })
-      .then((r) => setItems(r.items))
-      .catch((e) => setError(String(e)));
-  }, []);
-
   return (
-    <div style={{ padding: 24, fontFamily: "system-ui" }}>
-      <h1>Ecommerce</h1>
+    <BrowserRouter>
+      <div style={{ padding: 12, fontFamily: "system-ui" }}>
+        <Link to="/" style={{ marginRight: 12 }}>Home</Link>
+        <Link to="/cart">Cart</Link>
+      </div>
 
-      {error && <p style={{ color: "crimson" }}>{error}</p>}
-
-      <ul>
-        {items.map((p) => (
-          <li key={p.id} style={{ marginBottom: 12 }}>
-            <strong>{p.name}</strong> — ${formatPrice(p.priceCents)}
-            {p.category ? <span> ({p.category.name})</span> : null}
-            {p.description ? <div>{p.description}</div> : null}
-          </li>
-        ))}
-      </ul>
-    </div>
+      <Routes>
+        <Route path="/" element={<ProductListPage />} />
+        <Route path="/products/:id" element={<ProductDetailPage />} />
+        <Route path="/cart" element={<CartPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
