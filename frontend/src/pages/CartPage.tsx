@@ -51,6 +51,7 @@ export function CartPage() {
                     </ul>
 
                     <h3>Total: ${formatPrice(total)}</h3>
+                    <Link to="/checkout">Proceed to checkout</Link>
                     <Link to="/">← Continue shopping</Link>
                 </>
             )}
