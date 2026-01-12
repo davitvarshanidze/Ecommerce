@@ -5,10 +5,11 @@ namespace Ecommerce.Infrastructure.Persistence;
 
 public sealed class AppDbContext : DbContext
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) {}
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-    public DbSet<Product> Products => Set<Product>();
     public DbSet<Category> Categories => Set<Category>();
+    public DbSet<Product> Products => Set<Product>();
+    public DbSet<AppUser> Users => Set<AppUser>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -30,6 +31,17 @@ public sealed class AppDbContext : DbContext
              .WithMany()
              .HasForeignKey(x => x.CategoryId)
              .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<AppUser>(b =>
+        {
+            b.HasKey(x => x.Id);
+            b.Property(x => x.Email).HasMaxLength(320).IsRequired();
+            b.HasIndex(x => x.Email).IsUnique();
+
+            b.Property(x => x.PasswordHash).HasMaxLength(500).IsRequired();
+            b.Property(x => x.Role).HasMaxLength(50).IsRequired();
+            b.Property(x => x.CreatedAtUtc).IsRequired();
         });
     }
 }
