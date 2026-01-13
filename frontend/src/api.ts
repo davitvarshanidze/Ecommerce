@@ -1,3 +1,5 @@
+import { getToken } from "./auth";
+
 export type Category = { id: string; name: string; slug: string };
 
 export type Product = {
@@ -41,11 +43,20 @@ export async function fetchProduct(id: string): Promise<Product> {
   return res.json();
 }
 
-import { getToken } from "./auth";
-
 function authHeaders(): HeadersInit {
   const t = getToken();
   return t ? { Authorization: `Bearer ${t}` } : {};
+}
+
+export async function login(email: string, password: string) {
+  const res = await fetch(`${API_BASE}/auth/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  });
+
+  if (!res.ok) throw new Error("Invalid credentials");
+  return res.json();
 }
 
 export async function fetchMe() {
@@ -55,6 +66,6 @@ export async function fetchMe() {
     },
   });
 
-  if (!res.ok) throw new Error(`Failed: ${res.status}`);
+  if (!res.ok) throw new Error("Not authenticated");
   return res.json();
 }
