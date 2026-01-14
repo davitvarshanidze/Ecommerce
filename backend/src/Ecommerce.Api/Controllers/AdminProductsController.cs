@@ -85,4 +85,25 @@ public sealed class AdminProductsController : ControllerBase
         var s = slug.Trim().ToLower();
         return await _db.Categories.FirstOrDefaultAsync(c => c.Slug == s);
     }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        var items = await _db.Products.AsNoTracking()
+            .Include(p => p.Category)
+            .OrderBy(p => p.Name)
+            .Select(p => new
+            {
+                p.Id,
+                p.Name,
+                p.Description,
+                p.PriceCents,
+                p.ImageUrl,
+                p.IsActive,
+                Category = p.Category == null ? null : new { p.Category.Id, p.Category.Name, p.Category.Slug }
+            })
+            .ToListAsync();
+
+        return Ok(items);
+    }
 }
