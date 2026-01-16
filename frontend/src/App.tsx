@@ -11,6 +11,7 @@ import {LoginPage} from "./pages/LoginPage";
 import {OrdersPage} from "./pages/OrdersPage";
 import {OrderDetailsPage} from "./pages/OrderDetailsPage";
 import {AdminProductsPage} from "./pages/AdminProductsPage";
+import {RegisterPage} from "./pages/RegisterPage";
 
 export default function App() {
     const [me, setMe] = useState<any | null>(null);
@@ -63,7 +64,10 @@ export default function App() {
                             </button>
                         </>
                     ) : (
-                        <Link className="btn" to="/login">Login</Link>
+                        <>
+                            <Link className="btn secondary" to="/login">Login</Link>
+                            <Link className="btn" to="/register">Register</Link>
+                        </>
                     )}
                 </div>
             </div>
@@ -79,6 +83,7 @@ export default function App() {
                         <Route path="/order-confirmation/:orderId" element={<OrderConfirmationPage/>}/>
                         <Route path="/orders" element={<OrdersPage/>}/>
                         <Route path="/orders/:id" element={<OrderDetailsPage/>}/>
+                        <Route path="/register" element={<RegisterPage/>}/>
                         <Route
                             path="/admin/products"
                             element={

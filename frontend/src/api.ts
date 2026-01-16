@@ -59,6 +59,17 @@ export async function login(email: string, password: string) {
     return res.json();
 }
 
+export async function register(email: string, password: string) {
+    const res = await fetch(`${API_BASE}/auth/register`, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({email, password}),
+    });
+
+    if (res.status === 409) throw new Error("Email already registered");
+    if (!res.ok) throw new Error(`Register failed: ${res.status}`);
+}
+
 export async function fetchMe() {
     const res = await fetch(`${API_BASE}/auth/me`, {
         headers: {
@@ -159,7 +170,7 @@ export async function adminFetchProducts(): Promise<AdminProduct[]> {
 export async function adminDeleteProduct(id: string) {
     const res = await fetch(`${API_BASE}/admin/products/${id}`, {
         method: "DELETE",
-        headers: { ...authHeaders() },
+        headers: {...authHeaders()},
     });
 
     if (!res.ok) throw new Error(`Admin delete failed: ${res.status}`);
@@ -178,7 +189,7 @@ export async function adminUpdateProduct(
 ) {
     const res = await fetch(`${API_BASE}/admin/products/${id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json", ...authHeaders() },
+        headers: {"Content-Type": "application/json", ...authHeaders()},
         body: JSON.stringify(input),
     });
 
