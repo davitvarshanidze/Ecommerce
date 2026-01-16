@@ -1,8 +1,7 @@
-import {useMemo, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {cartTotalCents, loadCart, saveCart, type CartItem} from "../cart";
 import {createOrder} from "../api";
-import {useEffect} from "react";
 import {getToken} from "../auth";
 
 function formatPrice(cents: number) {
@@ -20,8 +19,13 @@ type Address = {
 export function CheckoutPage() {
     const navigate = useNavigate();
 
+    const [checkedAuth, setCheckedAuth] = useState(false);
+
     const [cart] = useState<CartItem[]>(() => loadCart());
     const total = useMemo(() => cartTotalCents(cart), [cart]);
+
+    const [error, setError] = useState<string | null>(null);
+    const [submitting, setSubmitting] = useState(false);
 
     const [address, setAddress] = useState<Address>({
         fullName: "",
@@ -34,11 +38,14 @@ export function CheckoutPage() {
     useEffect(() => {
         if (!getToken()) {
             navigate("/login", {state: {from: "/checkout"}});
+            return;
         }
+        setCheckedAuth(true);
     }, [navigate]);
 
-    const [submitting, setSubmitting] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    if (!checkedAuth) {
+        return null;
+    }
 
     if (cart.length === 0) {
         return (
