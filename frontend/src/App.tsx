@@ -37,59 +37,65 @@ export default function App() {
     }, []);
     return (
         <BrowserRouter>
-            <div style={{padding: 12, fontFamily: "system-ui"}}>
-                <Link to="/" style={{marginRight: 12}}>Home</Link>
-                <Link to="/cart" style={{marginRight: 12}}>Cart</Link>
-                <Link to="/orders" style={{marginRight: 12}}>Orders</Link>
+            <div className="nav">
+                <div className="nav-inner">
+                    <Link className="brand" to="/">Ecommerce</Link>
+                    <Link to="/">Shop</Link>
+                    <Link to="/cart">Cart</Link>
+                    <Link to="/orders">Orders</Link>
 
-                {me?.role === "Admin" && (
-                    <Link to="/admin/products" style={{marginRight: 12}}>
-                        Admin
-                    </Link>
-                )}
+                    {me?.role === "Admin" && <Link to="/admin/products">Admin</Link>}
 
-                {me ? (
-                    <>
-                        <span style={{marginRight: 12}}>Logged in as {me.email}</span>
-                        <button
-                            onClick={() => {
-                                clearToken();
-                                setMe(null);
-                                window.dispatchEvent(new Event("auth-changed"));
-                            }}
-                        >
-                            Logout
-                        </button>
-                    </>
-                ) : (
-                    <Link to="/login">Login</Link>
-                )}
+                    <div style={{marginLeft: "auto"}}/>
+
+                    {me ? (
+                        <>
+                            <span className="pill">{me.email}</span>
+                            <button
+                                className="btn secondary"
+                                onClick={() => {
+                                    clearToken();
+                                    setMe(null);
+                                    window.dispatchEvent(new Event("auth-changed"));
+                                }}
+                            >
+                                Logout
+                            </button>
+                        </>
+                    ) : (
+                        <Link className="btn" to="/login">Login</Link>
+                    )}
+                </div>
             </div>
 
-            <Routes>
-                <Route path="/" element={<ProductListPage/>}/>
-                <Route path="/login" element={<LoginPage/>}/>
-                <Route path="/products/:id" element={<ProductDetailPage/>}/>
-                <Route path="/cart" element={<CartPage/>}/>
-                <Route path="/checkout" element={<CheckoutPage/>}/>
-                <Route path="/order-confirmation/:orderId" element={<OrderConfirmationPage/>}/>
-                <Route path="/orders" element={<OrdersPage/>}/>
-                <Route path="/orders/:id" element={<OrderDetailsPage/>}/>
-                <Route
-                    path="/admin/products"
-                    element={
-                        me?.role === "Admin" ? (
-                            <AdminProductsPage/>
-                        ) : (
-                            <div style={{padding: 24, fontFamily: "system-ui"}}>
-                                <h2>Forbidden</h2>
-                                <p>You must be an admin to view this page.</p>
-                                <Link to="/">Go home</Link>
-                            </div>
-                        )
-                    }
-                />
-            </Routes>
+            <div className="container">
+                <div className="content">
+                    <Routes>
+                        <Route path="/" element={<ProductListPage/>}/>
+                        <Route path="/login" element={<LoginPage/>}/>
+                        <Route path="/products/:id" element={<ProductDetailPage/>}/>
+                        <Route path="/cart" element={<CartPage/>}/>
+                        <Route path="/checkout" element={<CheckoutPage/>}/>
+                        <Route path="/order-confirmation/:orderId" element={<OrderConfirmationPage/>}/>
+                        <Route path="/orders" element={<OrdersPage/>}/>
+                        <Route path="/orders/:id" element={<OrderDetailsPage/>}/>
+                        <Route
+                            path="/admin/products"
+                            element={
+                                me?.role === "Admin" ? (
+                                    <AdminProductsPage/>
+                                ) : (
+                                    <div style={{padding: 24, fontFamily: "system-ui"}}>
+                                        <h2>Forbidden</h2>
+                                        <p>You must be an admin to view this page.</p>
+                                        <Link to="/">Go home</Link>
+                                    </div>
+                                )
+                            }
+                        />
+                    </Routes>
+                </div>
+            </div>
         </BrowserRouter>
     );
 }
