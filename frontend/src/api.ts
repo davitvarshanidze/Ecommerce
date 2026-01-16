@@ -88,14 +88,22 @@ export type OrderSummary = {
     itemCount: number;
 };
 
-export async function createOrder(items: { productId: string; quantity: number }[]) {
+export async function createOrder(
+    items: { productId: string; quantity: number }[],
+    payment?: { paymentMethod: "Card" | "Cash"; cardBrand?: string | null; cardLast4?: string | null }
+) {
     const res = await fetch(`${API_BASE}/orders`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
             ...authHeaders(),
         },
-        body: JSON.stringify({items}),
+        body: JSON.stringify({
+            items,
+            paymentMethod: payment?.paymentMethod ?? "Mock",
+            cardBrand: payment?.cardBrand ?? null,
+            cardLast4: payment?.cardLast4 ?? null,
+        }),
     });
 
     if (!res.ok) throw new Error(`Failed to create order: ${res.status}`);
