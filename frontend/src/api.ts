@@ -18,7 +18,8 @@ export type PagedResult<T> = {
     items: T[];
 };
 
-const API_BASE = "http://localhost:5076";
+// const API_BASE = "http://localhost:5076";
+const API_BASE = import.meta.env.VITE_API_BASE ?? "http://localhost:5076";
 
 export async function fetchProducts(params: {
     page?: number;
