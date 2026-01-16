@@ -8,6 +8,17 @@ function formatPrice(cents: number) {
     return (cents / 100).toFixed(2);
 }
 
+function digitsOnly(s: string) {
+    return s.replace(/\D/g, "");
+}
+
+function detectBrand(digits: string) {
+    if (digits.startsWith("4")) return "Visa";
+    if (digits.startsWith("5")) return "Mastercard";
+    if (digits.startsWith("3")) return "Amex";
+    return "Card";
+}
+
 type Address = {
     fullName: string;
     email: string;
@@ -34,6 +45,12 @@ export function CheckoutPage() {
         city: "",
         country: "Georgia",
     });
+
+    const [paymentMethod, setPaymentMethod] = useState<"Card" | "Cash">("Card");
+    const [cardName, setCardName] = useState("");
+    const [cardNumber, setCardNumber] = useState("");
+    const [cardExpiry, setCardExpiry] = useState("");
+    const [cardCvc, setCardCvc] = useState("");
 
     useEffect(() => {
         if (!getToken()) {
@@ -66,6 +83,14 @@ export function CheckoutPage() {
         if (!address.city.trim()) return setError("City is required.");
         if (!address.country.trim()) return setError("Country is required.");
 
+        if (paymentMethod === "Card") {
+            const digits = digitsOnly(cardNumber);
+            if (digits.length < 12) return setError("Please enter a valid card number." );
+            if (!cardExpiry.trim()) return setError("Expiry is required." );
+            if (!cardCvc.trim()) return setError("CVC is required." );
+            if (!cardName.trim()) return setError("Name on card is required." );
+        }
+
         setSubmitting(true);
         try {
             const payload = cart.map((x) => ({
@@ -73,7 +98,15 @@ export function CheckoutPage() {
                 quantity: x.quantity,
             }));
 
-            const created = await createOrder(payload);
+            const digits = digitsOnly(cardNumber);
+            const last4 = digits.length >= 4 ? digits.slice(-4) : null;
+            const brand = digits.length > 0 ? detectBrand(digits) : null;
+
+            const created = await (createOrder as any)(payload, {
+                paymentMethod,
+                cardBrand: paymentMethod === "Card" ? brand : null,
+                cardLast4: paymentMethod === "Card" ? last4 : null,
+            });
 
             // Save last order confirmation info (optional)
             localStorage.setItem(
@@ -84,6 +117,7 @@ export function CheckoutPage() {
                     totalCents: total,
                     items: cart,
                     address,
+                    paymentMethod,
                 })
             );
 
@@ -103,7 +137,7 @@ export function CheckoutPage() {
     }
 
     return (
-        <div style={{padding: 24, fontFamily: "system-ui", maxWidth: 800}}>
+        <div className="container">
             <h1>Checkout</h1>
 
             {error && <p style={{color: "crimson"}}>{error}</p>}
@@ -115,7 +149,6 @@ export function CheckoutPage() {
                         <input
                             value={address.fullName}
                             onChange={(e) => setAddress({...address, fullName: e.target.value})}
-                            style={{width: "100%", padding: 8}}
                         />
                     </label>
                 </div>
@@ -126,7 +159,6 @@ export function CheckoutPage() {
                         <input
                             value={address.email}
                             onChange={(e) => setAddress({...address, email: e.target.value})}
-                            style={{width: "100%", padding: 8}}
                         />
                     </label>
                 </div>
@@ -137,7 +169,6 @@ export function CheckoutPage() {
                         <input
                             value={address.line1}
                             onChange={(e) => setAddress({...address, line1: e.target.value})}
-                            style={{width: "100%", padding: 8}}
                         />
                     </label>
                 </div>
@@ -148,7 +179,6 @@ export function CheckoutPage() {
                         <input
                             value={address.city}
                             onChange={(e) => setAddress({...address, city: e.target.value})}
-                            style={{width: "100%", padding: 8}}
                         />
                     </label>
                 </div>
@@ -159,10 +189,62 @@ export function CheckoutPage() {
                         <input
                             value={address.country}
                             onChange={(e) => setAddress({...address, country: e.target.value})}
-                            style={{width: "100%", padding: 8}}
                         />
                     </label>
                 </div>
+            </div>
+
+            <div className="card" style={{ marginTop: 20 }}>
+                <h3 style={{ marginTop: 0 }}>Payment</h3>
+
+                <div style={{ display: "flex", gap: 16, alignItems: "center", flexWrap: "wrap" }}>
+                    <label style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                        <input
+                            type="radio"
+                            checked={paymentMethod === "Card"}
+                            onChange={() => setPaymentMethod("Card")}
+                        />
+                        Card
+                    </label>
+
+                    <label style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                        <input
+                            type="radio"
+                            checked={paymentMethod === "Cash"}
+                            onChange={() => setPaymentMethod("Cash")}
+                        />
+                        Cash
+                    </label>
+                </div>
+
+                {paymentMethod === "Card" && (
+                    <div style={{ display: "grid", gap: 10, marginTop: 12 }}>
+                        <input
+                            value={cardName}
+                            onChange={(e) => setCardName(e.target.value)}
+                            placeholder="Name on card"
+                        />
+                        <input
+                            value={cardNumber}
+                            onChange={(e) => setCardNumber(e.target.value)}
+                            placeholder="Card number"
+                        />
+                        <div style={{ display: "flex", gap: 10 }}>
+                            <input
+                                value={cardExpiry}
+                                onChange={(e) => setCardExpiry(e.target.value)}
+                                placeholder="MM/YY"
+                            />
+                            <input
+                                value={cardCvc}
+                                onChange={(e) => setCardCvc(e.target.value)}
+                                placeholder="CVC"
+                            />
+                        </div>
+                        <p className="muted" style={{ margin: 0, fontSize: 12 }}>
+                        </p>
+                    </div>
+                )}
             </div>
 
             <h3 style={{marginTop: 24}}>Order summary</h3>
@@ -177,14 +259,15 @@ export function CheckoutPage() {
             <h2>Total: ${formatPrice(total)}</h2>
 
             <button
+                className="btn"
                 onClick={placeOrder}
                 disabled={submitting}
-                style={{padding: "10px 14px", marginRight: 12}}
+                style={{ marginRight: 12 }}
             >
                 {submitting ? "Placing order…" : "Place order"}
             </button>
 
-            <Link to="/cart">Back to cart</Link>
+            <Link className="btn secondary" to="/cart">Back to cart</Link>
         </div>
     );
 }
